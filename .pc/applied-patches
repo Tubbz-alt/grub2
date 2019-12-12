@@ -139,3 +139,4 @@ arm-align-section-alignment-with-manual-reloc-offset.patch
 no-devicetree-if-secure-boot.patch
 grub-install-removable-shim.patch
 fix-aarch64.patch
+show_head_and_end_hex_of_file_being_readed.patch
