@@ -25,6 +25,7 @@
 #include <grub/fs.h>
 #include <grub/device.h>
 #include <grub/i18n.h>
+#include <grub/time.h>
 
 void (*EXPORT_VAR (grub_grubnet_fini)) (void);
 
@@ -123,7 +124,7 @@ grub_file_open (const char *name)
       }
   if (!file)
     grub_file_close (last_file);
-    
+
   grub_memcpy (grub_file_filters_enabled, grub_file_filters_all,
 	       sizeof (grub_file_filters_enabled));
 
@@ -182,6 +183,19 @@ grub_file_read (grub_file_t file, void *buf, grub_size_t len)
   res = (file->fs->read) (file, buf, len);
   file->read_hook = read_hook;
   file->read_hook_data = read_hook_data;
+
+  // buf is char*
+  char* cbuf = (char *)buf;
+  char begin_buf[16] = {NULL}, end_buf[16] = {NULL};
+  for (int i=0; i<16; i++)
+    {
+      begin_buf[i] = cbuf[i];
+      end_buf[i] = cbuf[len-16+i];
+    }
+  grub_dprintf ("DATA HEAD: %x, DATA_END: %x", begin_buf, end_buf);
+
+  grub_millisleep (30000);
+
   if (res > 0)
     file->offset += res;
 
@@ -212,9 +226,9 @@ grub_file_seek (grub_file_t file, grub_off_t offset)
 		  N_("attempt to seek outside of the file"));
       return -1;
     }
-  
+
   old = file->offset;
   file->offset = offset;
-    
+
   return old;
 }
