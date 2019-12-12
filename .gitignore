@@ -1,1 +1,4 @@
 debian/files
+GPATH
+GRTAGS
+GTAGS
