@@ -1,3 +1,10 @@
+grub2 (2.02+dfsg1+deepin2-1deepin1) UNRELEASED; urgency=medium
+
+  * Non-maintainer upload.
+  * Rebuild.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Thu, 12 Dec 2019 20:26:49 +0800
+
 grub2 (2.02+dfsg1+deepin2-1+deepin) unstable; urgency=low
 
   * ['Autobuild release-candidate: f037c9b9ddfca4a7ea79100b3280a17a444b3c69']
