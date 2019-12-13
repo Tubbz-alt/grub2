@@ -9,6 +9,9 @@ disk_module_CPPFLAGS  = $(AM_CPPFLAGS) $(CPPFLAGS_MODULE)
 disk_module_CCASFLAGS  = $(AM_CCASFLAGS) $(CCASFLAGS_MODULE) 
 disk_module_DEPENDENCIES  = $(TARGET_OBJ2ELF) 
 dist_noinst_DATA += kern/disk_common.c 
+
+linux16_module_SOURCES = loader/verify.c loader/verify/openssl-init.c
+
 BUILT_SOURCES += $(nodist_disk_module_SOURCES)
 CLEANFILES += $(nodist_disk_module_SOURCES)
 MOD_FILES += disk.mod
@@ -12319,7 +12322,7 @@ endif
 if COND_i386_pc
 platform_PROGRAMS += linux16.module
 MODULE_FILES += linux16.module$(EXEEXT)
-linux16_module_SOURCES  = loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux16_module_SOURCES  += loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux16_module_SOURCES  =  ## platform nodist sources
 linux16_module_LDADD  = 
 linux16_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -12342,7 +12345,7 @@ endif
 if COND_i386_efi
 platform_PROGRAMS += linux16.module
 MODULE_FILES += linux16.module$(EXEEXT)
-linux16_module_SOURCES  = loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux16_module_SOURCES  += loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux16_module_SOURCES  =  ## platform nodist sources
 linux16_module_LDADD  = 
 linux16_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -12365,7 +12368,7 @@ endif
 if COND_i386_qemu
 platform_PROGRAMS += linux16.module
 MODULE_FILES += linux16.module$(EXEEXT)
-linux16_module_SOURCES  = loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux16_module_SOURCES  += loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux16_module_SOURCES  =  ## platform nodist sources
 linux16_module_LDADD  = 
 linux16_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -12388,7 +12391,7 @@ endif
 if COND_i386_coreboot
 platform_PROGRAMS += linux16.module
 MODULE_FILES += linux16.module$(EXEEXT)
-linux16_module_SOURCES  = loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux16_module_SOURCES  += loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux16_module_SOURCES  =  ## platform nodist sources
 linux16_module_LDADD  = 
 linux16_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -12411,7 +12414,7 @@ endif
 if COND_i386_multiboot
 platform_PROGRAMS += linux16.module
 MODULE_FILES += linux16.module$(EXEEXT)
-linux16_module_SOURCES  = loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux16_module_SOURCES  += loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux16_module_SOURCES  =  ## platform nodist sources
 linux16_module_LDADD  = 
 linux16_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -12434,7 +12437,7 @@ endif
 if COND_i386_ieee1275
 platform_PROGRAMS += linux16.module
 MODULE_FILES += linux16.module$(EXEEXT)
-linux16_module_SOURCES  = loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux16_module_SOURCES  += loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux16_module_SOURCES  =  ## platform nodist sources
 linux16_module_LDADD  = 
 linux16_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -12457,7 +12460,7 @@ endif
 if COND_x86_64_efi
 platform_PROGRAMS += linux16.module
 MODULE_FILES += linux16.module$(EXEEXT)
-linux16_module_SOURCES  = loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux16_module_SOURCES  += loader/i386/pc/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux16_module_SOURCES  =  ## platform nodist sources
 linux16_module_LDADD  = 
 linux16_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 

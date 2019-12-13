@@ -768,10 +768,14 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   verify_buf = grub_malloc (file->size);
   if (grub_file_read (file, verify_buf, file->size) != (grub_ssize_t) file->size)
     {
-      grub_dprintf("linux", "reading failed!");
+      grub_dprintf("linux", "read file %s failed!", argv[0]);
+      goto fail;
     }
   else
-    grub_dprintf("linux", "read done!");
+    {
+      grub_dprintf("linux", "read done!");
+      verify_pe (verify_buf);
+    }
   grub_free (verify_buf);
 
   grub_file_seek (file, 0);

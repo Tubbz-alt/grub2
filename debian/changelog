@@ -1,3 +1,9 @@
+grub2 (2.02+dfsg1+deepin2-1deepin6) unstable; urgency=medium
+
+  * Add cryptolib.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Fri, 13 Dec 2019 16:47:14 +0800
+
 grub2 (2.02+dfsg1+deepin2-1deepin5) unstable; urgency=medium
 
   * Try to read file.
