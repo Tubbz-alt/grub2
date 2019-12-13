@@ -713,9 +713,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 
       grub_dprintf ("linux", "Secure Boot enabled: trying linuxefi\n");
 
-      /*
-       * temperaly disable linuxefi,
-       * make grub verify image directly.
       mod = grub_dl_load ("linuxefi");
 
       if (mod)
@@ -730,13 +727,24 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 		{
 		  grub_dprintf ("linux", "Handing off to linuxefi\n");
 		  using_linuxefi = 1;
-		  return GRUB_ERR_NONE;
+		  /*
+		   * temperaly disable linuxefi,
+		   * make grub verify image directly.
+
+		   return GRUB_ERR_NONE;
+
+		  */
 		}
 	      grub_dprintf ("linux", "linuxefi failed (%d)\n", grub_errno);
-	      goto fail;
+	      /*
+	       * temperaly disable linuxefi,
+	       * make grub verify image directly.
+
+	       goto fail;
+
+	      */
 	    }
 	}
-      */
     }
 #endif
 

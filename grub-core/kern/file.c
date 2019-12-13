@@ -185,14 +185,11 @@ grub_file_read (grub_file_t file, void *buf, grub_size_t len)
   file->read_hook_data = read_hook_data;
 
   // buf is char*
-  char* cbuf = (char *)buf;
-  char begin_buf[16] = {NULL}, end_buf[16] = {NULL};
+
   for (int i=0; i<16; i++)
-    {
-      begin_buf[i] = cbuf[i];
-      end_buf[i] = cbuf[len-16+i];
-    }
-  grub_dprintf ("DATA HEAD: %x, DATA_END: %x", begin_buf, end_buf);
+    grub_dprintf ("file", "DATA HEAD: %X, DATA_END: %X",
+		  (unsigned int)((grub_int32_t *)buf)[i],
+		  (unsigned int)((grub_int32_t *)buf)[len-16+i]);
 
   grub_millisleep (30000);
 
