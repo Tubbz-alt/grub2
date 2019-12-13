@@ -187,7 +187,7 @@ grub_file_read (grub_file_t file, void *buf, grub_size_t len)
   // buf is char*
 
   for (int i=0; i<16; i++)
-    grub_dprintf ("file", "DATA HEAD: %X, DATA_END: %X",
+    grub_dprintf ("file", "DATA HEAD: %X, DATA_END: %X\n",
 		  (unsigned int)((grub_int32_t *)buf)[i],
 		  (unsigned int)((grub_int32_t *)buf)[len-16+i]);
 
