@@ -145,3 +145,4 @@ add_wrap_line.patch
 test_file_size.patch
 fix_format.patch
 fix_format02.patch
+fix_format03.patch
