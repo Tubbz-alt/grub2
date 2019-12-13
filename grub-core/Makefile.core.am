@@ -11,6 +11,7 @@ disk_module_DEPENDENCIES  = $(TARGET_OBJ2ELF)
 dist_noinst_DATA += kern/disk_common.c 
 
 linux16_module_SOURCES = loader/verify.c loader/verify/openssl-init.c
+linux_module_SOURCES = loader/verify.c loader/verify/openssl-init.c
 
 BUILT_SOURCES += $(nodist_disk_module_SOURCES)
 CLEANFILES += $(nodist_disk_module_SOURCES)
@@ -12989,7 +12990,7 @@ endif
 if COND_i386_pc
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = lib/i386/pc/vesa_modes_table.c loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += lib/i386/pc/vesa_modes_table.c loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13012,7 +13013,7 @@ endif
 if COND_i386_efi
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13035,7 +13036,7 @@ endif
 if COND_i386_qemu
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13058,7 +13059,7 @@ endif
 if COND_i386_coreboot
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13081,7 +13082,7 @@ endif
 if COND_i386_multiboot
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13104,7 +13105,7 @@ endif
 if COND_i386_ieee1275
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13127,7 +13128,7 @@ endif
 if COND_x86_64_efi
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13150,7 +13151,7 @@ endif
 if COND_i386_xen
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/xen.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/xen.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13173,7 +13174,7 @@ endif
 if COND_x86_64_xen
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/i386/xen.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/i386/xen.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13196,7 +13197,7 @@ endif
 if COND_mips_loongson
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/mips/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/mips/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13219,7 +13220,7 @@ endif
 if COND_sparc64_ieee1275
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/sparc64/ieee1275/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/sparc64/ieee1275/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13242,7 +13243,7 @@ endif
 if COND_powerpc_ieee1275
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/powerpc/ieee1275/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/powerpc/ieee1275/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13265,7 +13266,7 @@ endif
 if COND_mips_arc
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/mips/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/mips/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13288,7 +13289,7 @@ endif
 if COND_ia64_efi
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/ia64/efi/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/ia64/efi/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13311,7 +13312,7 @@ endif
 if COND_mips_qemu_mips
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/mips/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/mips/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13334,7 +13335,7 @@ endif
 if COND_arm_uboot
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/arm/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/arm/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13357,7 +13358,7 @@ endif
 if COND_arm_efi
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/arm/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/arm/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 
@@ -13380,7 +13381,7 @@ endif
 if COND_arm64_efi
 platform_PROGRAMS += linux.module
 MODULE_FILES += linux.module$(EXEEXT)
-linux_module_SOURCES  = loader/arm64/linux.c loader/linux.c lib/cmdline.c  ## platform sources
+linux_module_SOURCES  += loader/arm64/linux.c loader/linux.c lib/cmdline.c  ## platform sources
 nodist_linux_module_SOURCES  =  ## platform nodist sources
 linux_module_LDADD  = 
 linux_module_CFLAGS  = $(AM_CFLAGS) $(CFLAGS_MODULE) 

@@ -12,7 +12,7 @@
 #include <Library/BaseCryptLib.h>
 
 
-static void
+void
 init_openssl(void)
 {
   CRYPTO_set_mem_functions(ossl_malloc, NULL, ossl_free);

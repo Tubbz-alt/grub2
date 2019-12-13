@@ -37,6 +37,7 @@
 #include <grub/linux.h>
 #include <grub/machine/kernel.h>
 #include <grub/time.h>
+#include <grub/err.h>
 
 GRUB_MOD_LICENSE ("GPLv3+");
 
@@ -61,6 +62,8 @@ GRUB_MOD_LICENSE ("GPLv3+");
 #define DEFAULT_VIDEO_MODE "text"
 #define ACCEPTS_PURE_TEXT 1
 #endif
+
+extern grub_err_t verify_pe (char* buf);
 
 static grub_dl_t my_mod;
 

@@ -1709,6 +1709,8 @@ module = {
   arm64 = loader/arm64/linux.c;
   common = loader/linux.c;
   common = lib/cmdline.c;
+  extra_dist = loader/verify.c
+  extra_dist = loader/verify/openssl_init.c
   enable = noemu;
 };
 
