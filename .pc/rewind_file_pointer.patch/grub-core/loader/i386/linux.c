@@ -774,8 +774,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     grub_dprintf("linux", "read done!");
   grub_free (verify_buf);
 
-  grub_file_seek (file, 0);
-
   grub_millisleep (30000);
 
   if (grub_file_read (file, &lh, sizeof (lh)) != sizeof (lh))
