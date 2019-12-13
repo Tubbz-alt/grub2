@@ -766,9 +766,9 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   // verify file to be loaded
   grub_dprintf("linux", "%s size is: %llu", argv[0], (long long unsigned int)file->size);
   verify_buf = grub_malloc (file->size);
-  if (grub_file_read (file, verify_buf, file->size) != (grub_size_t) file->size)
+  if (grub_file_read (file, verify_buf, file->size) != file->size)
     {
-      grub_dprintf("linux", "reading failed!");
+      grub_dprintf("linux", "reading failed!")
     }
   else
     grub_dprintf("linux", "read done!");
