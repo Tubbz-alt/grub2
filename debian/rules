@@ -39,6 +39,8 @@ else
 with_check := yes
 endif
 
+with_check = no
+
 CC := gcc-8
 
 confflags = \
