@@ -1,3 +1,9 @@
+grub2 (2.02+dfsg1+deepin2-1deepin5) unstable; urgency=medium
+
+  * Try to read file.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Fri, 13 Dec 2019 14:31:29 +0800
+
 grub2 (2.02+dfsg1+deepin2-1deepin4) unstable; urgency=medium
 
   * Add timeout.

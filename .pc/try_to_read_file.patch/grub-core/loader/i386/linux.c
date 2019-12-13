@@ -701,8 +701,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   int relocatable;
   grub_uint64_t preferred_address = GRUB_LINUX_BZIMAGE_ADDR;
 
-  char* verify_buf;
-
   // grub_uint32_t* read_buf;
 
   grub_dl_ref (my_mod);
@@ -765,16 +763,9 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 
   // verify file to be loaded
   grub_dprintf("linux", "%s size is: %llu", argv[0], (long long unsigned int)file->size);
-  verify_buf = grub_malloc (file->size);
-  if (grub_file_read (file, verify_buf, file->size) != file->size)
-    {
-      grub_dprintf("linux", "reading failed!")
-    }
-  else
-    grub_dprintf("linux", "read done!");
-  grub_free (verify_buf);
+  // read_buf = grub_malloc ();
 
-  grub_millisleep (30000);
+  grub_millisleep (10000);
 
   if (grub_file_read (file, &lh, sizeof (lh)) != sizeof (lh))
     {
