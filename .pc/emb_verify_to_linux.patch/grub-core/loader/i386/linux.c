@@ -36,7 +36,6 @@
 #include <grub/lib/cmdline.h>
 #include <grub/linux.h>
 #include <grub/machine/kernel.h>
-#include <grub/time.h>
 
 GRUB_MOD_LICENSE ("GPLv3+");
 
@@ -701,10 +700,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   int relocatable;
   grub_uint64_t preferred_address = GRUB_LINUX_BZIMAGE_ADDR;
 
-  // for verify
-  int fnlen = grbu_strlen(argv[0]);
-  char *verify_args[2] = { NULL, NULL };
-
   grub_dl_ref (my_mod);
 
 #ifdef GRUB_MACHINE_EFI
@@ -749,35 +744,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   file = grub_file_open (argv[0]);
   if (! file)
     goto fail;
-
-  // verify sig
-  mod = grub_dl_load("verify");
-  if (mod)
-    {
-      grub_dprintf ("linux", "Found module verify!\n");
-      grub_dl_ref (mod);
-      verify_detach_cmd = grub_command_find ("verify_detach");
-
-      fnlen = grub_strlen (argv[0]);
-      verify_args[0] = argv[0];
-      verify_args[1] = grub_malloc (fnlen+4); // filename + .sig
-      grub_strcpy (verify_args[1], argv[0]);
-      grub_strcat (verify_args[1], ".sig");
-
-      if (verify_detach_cmd)
-	{
-	  grub_dprintf("linux", "Found command verify_detach!\n");
-	  (verify_detach_cmd->func) (verify_detach_cmd, 2, verify_args);
-	  if (grub_errorno == GRUB_ERR_NONE)
-	    {
-	      grub_dprintf ("linux", "verify success!\n");
-	    }
-	  else
-	    grub_dprintf ("linux", "Error: %d\n", (int) grub_errorno);
-	}
-    }
-
-  grub_millisleep (30000);
 
   if (grub_file_read (file, &lh, sizeof (lh)) != sizeof (lh))
     {
