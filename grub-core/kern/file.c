@@ -184,15 +184,6 @@ grub_file_read (grub_file_t file, void *buf, grub_size_t len)
   file->read_hook = read_hook;
   file->read_hook_data = read_hook_data;
 
-  // buf is char*
-
-  for (int i=0; i<16; i++)
-    grub_dprintf ("file", "DATA HEAD: %X, DATA_END: %X\n",
-		  (unsigned int)((grub_int32_t *)buf)[i],
-		  (unsigned int)((grub_int32_t *)buf)[len-16+i]);
-
-  grub_millisleep (30000);
-
   if (res > 0)
     file->offset += res;
 

@@ -700,6 +700,8 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   int relocatable;
   grub_uint64_t preferred_address = GRUB_LINUX_BZIMAGE_ADDR;
 
+  // grub_uint32_t* read_buf;
+
   grub_dl_ref (my_mod);
 
 #ifdef GRUB_MACHINE_EFI
@@ -757,6 +759,10 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   file = grub_file_open (argv[0]);
   if (! file)
     goto fail;
+
+  // verify file to be loaded
+  grub_dprintf("linux", "%s size is: %d", argv[0], file->size);
+  // read_buf = grub_malloc ();
 
   if (grub_file_read (file, &lh, sizeof (lh)) != sizeof (lh))
     {
