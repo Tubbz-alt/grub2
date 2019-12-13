@@ -1,3 +1,9 @@
+grub2 (2.02+dfsg1+deepin2-1deepin4) unstable; urgency=medium
+
+  * Add timeout.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Fri, 13 Dec 2019 13:58:34 +0800
+
 grub2 (2.02+dfsg1+deepin2-1deepin3) unstable; urgency=medium
 
   * Add wrap-line.

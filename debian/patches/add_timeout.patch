@@ -1,0 +1,36 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grub2 (2.02+dfsg1+deepin2-1deepin3) unstable; urgency=medium
+ .
+   * Add wrap-line.
+Author: Zhang Yueqian <zhangyueqian@deepin.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2019-12-13
+
+--- grub2-2.02+dfsg1+deepin2.orig/grub-core/loader/i386/linux.c
++++ grub2-2.02+dfsg1+deepin2/grub-core/loader/i386/linux.c
+@@ -764,6 +764,8 @@ grub_cmd_linux (grub_command_t cmd __att
+   grub_dprintf("linux", "%s size is: %llu", argv[0], (long long unsigned int)file->size);
+   // read_buf = grub_malloc ();
+ 
++  grub_millisleep (10000);
++
+   if (grub_file_read (file, &lh, sizeof (lh)) != sizeof (lh))
+     {
+       if (!grub_errno)

@@ -764,8 +764,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   grub_dprintf("linux", "%s size is: %llu", argv[0], (long long unsigned int)file->size);
   // read_buf = grub_malloc ();
 
-  grub_millisleep (10000);
-
   if (grub_file_read (file, &lh, sizeof (lh)) != sizeof (lh))
     {
       if (!grub_errno)
