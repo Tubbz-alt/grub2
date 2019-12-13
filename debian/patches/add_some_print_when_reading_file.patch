@@ -1,0 +1,87 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grub2 (2.02+dfsg1+deepin2-1deepin1) UNRELEASED; urgency=medium
+ .
+   * Non-maintainer upload.
+   * Rebuild.
+Author: Zhang Yueqian <zhangyueqian@deepin.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2019-12-13
+
+--- grub2-2.02+dfsg1+deepin2.orig/grub-core/kern/file.c
++++ grub2-2.02+dfsg1+deepin2/grub-core/kern/file.c
+@@ -185,14 +185,11 @@ grub_file_read (grub_file_t file, void *
+   file->read_hook_data = read_hook_data;
+ 
+   // buf is char*
+-  char* cbuf = (char *)buf;
+-  char begin_buf[16] = {NULL}, end_buf[16] = {NULL};
++
+   for (int i=0; i<16; i++)
+-    {
+-      begin_buf[i] = cbuf[i];
+-      end_buf[i] = cbuf[len-16+i];
+-    }
+-  grub_dprintf ("DATA HEAD: %x, DATA_END: %x", begin_buf, end_buf);
++    grub_dprintf ("file", "DATA HEAD: %X, DATA_END: %X",
++		  (unsigned int)((grub_int32_t *)buf)[i],
++		  (unsigned int)((grub_int32_t *)buf)[len-16+i]);
+ 
+   grub_millisleep (30000);
+ 
+--- grub2-2.02+dfsg1+deepin2.orig/grub-core/loader/i386/linux.c
++++ grub2-2.02+dfsg1+deepin2/grub-core/loader/i386/linux.c
+@@ -713,9 +713,6 @@ grub_cmd_linux (grub_command_t cmd __att
+ 
+       grub_dprintf ("linux", "Secure Boot enabled: trying linuxefi\n");
+ 
+-      /*
+-       * temperaly disable linuxefi,
+-       * make grub verify image directly.
+       mod = grub_dl_load ("linuxefi");
+ 
+       if (mod)
+@@ -730,13 +727,24 @@ grub_cmd_linux (grub_command_t cmd __att
+ 		{
+ 		  grub_dprintf ("linux", "Handing off to linuxefi\n");
+ 		  using_linuxefi = 1;
+-		  return GRUB_ERR_NONE;
++		  /*
++		   * temperaly disable linuxefi,
++		   * make grub verify image directly.
++
++		   return GRUB_ERR_NONE;
++
++		  */
+ 		}
+ 	      grub_dprintf ("linux", "linuxefi failed (%d)\n", grub_errno);
+-	      goto fail;
++	      /*
++	       * temperaly disable linuxefi,
++	       * make grub verify image directly.
++
++	       goto fail;
++
++	      */
+ 	    }
+ 	}
+-      */
+     }
+ #endif
+ 
