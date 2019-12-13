@@ -141,3 +141,4 @@ grub-install-removable-shim.patch
 fix-aarch64.patch
 show_head_and_end_hex_of_file_being_readed.patch
 add_some_print_when_reading_file.patch
+add_wrap_line.patch
