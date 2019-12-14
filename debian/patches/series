@@ -141,3 +141,4 @@ grub-install-removable-shim.patch
 fix-aarch64.patch
 emb_verify_to_linux.patch
 some_fix.patch
+fix_commands.patch

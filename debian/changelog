@@ -1,3 +1,9 @@
+grub2 (2.02+dfsg1+deepin3-1deepin3) unstable; urgency=medium
+
+  * Fix command name.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sat, 14 Dec 2019 10:51:24 +0800
+
 grub2 (2.02+dfsg1+deepin3-1deepin2) unstable; urgency=medium
 
   * Some fix.

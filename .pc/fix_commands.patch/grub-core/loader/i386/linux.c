@@ -756,13 +756,13 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   mod = grub_dl_load("verify");
   if (mod)
     {
-      grub_command_t verify_detached_cmd;
+      grub_command_t verify_detach_cmd;
       grub_err_t err;
       int signamelen;
 
       grub_dprintf ("sbverify", "Found module verify!\n");
       grub_dl_ref (mod);
-      verify_detached_cmd = grub_command_find ("verify_detached");
+      verify_detach_cmd = grub_command_find ("verify_detach");
 
       fnlen = grub_strlen (argv[0]);
 
@@ -770,15 +770,15 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 
       signamelen = fnlen + 4;
       verify_args[1] = grub_malloc (signamelen + 1); // filename + .sig
-      grub_snprintf (verify_args[1], signamelen + 1, "%s.sig", argv[0]);
+      grub_snprintf (verify_args[1], signamelen, "%s.sig", argv[0]);
 
       grub_dprintf ("sbverify", "filename : %s\n", verify_args[0]);
       grub_dprintf ("sbverify", "signature: %s\n", verify_args[1]);
 
-      if (verify_detached_cmd)
+      if (verify_detach_cmd)
 	{
 	  grub_dprintf("sbverify", "Found command verify_detach!\n");
-	  err = (verify_detached_cmd->func) (verify_detached_cmd, 2, verify_args);
+	  err = (verify_detach_cmd->func) (verify_detach_cmd, 2, verify_args);
 	  if (err == GRUB_ERR_NONE)
 	    {
 	      grub_dprintf ("sbverify", "verify success!\n");
