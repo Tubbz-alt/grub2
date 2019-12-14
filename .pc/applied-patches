@@ -142,3 +142,5 @@ fix-aarch64.patch
 emb_verify_to_linux.patch
 some_fix.patch
 fix_commands.patch
+verbose_key.patch
+add_more_print.patch

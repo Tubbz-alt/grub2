@@ -1,3 +1,15 @@
+grub2 (2.02+dfsg1+deepin3-1deepin7) unstable; urgency=medium
+
+  * Add more verbose.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sat, 14 Dec 2019 17:01:16 +0800
+
+grub2 (2.02+dfsg1+deepin3-1deepin6) unstable; urgency=medium
+
+  * Verbose key loading.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sat, 14 Dec 2019 15:22:53 +0800
+
 grub2 (2.02+dfsg1+deepin3-1deepin5) unstable; urgency=medium
 
   * Fix build script.

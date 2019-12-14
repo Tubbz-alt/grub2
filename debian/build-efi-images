@@ -189,19 +189,19 @@ NET_MODULES="$CD_MODULES
 # CD boot image
 "$grub_mkimage" -O "$platform" -o "$outdir/gcd$efi_name.efi" \
 		-d "$grub_core" \
-		-k debian/pub.key \
+		-v -k debian/pub.key \
 		-c "$workdir/grub-bootstrap.cfg" -m "$workdir/memdisk.fat" \
 		-p /boot/grub \
 		$CD_MODULES
 
 # Normal disk boot image
 "$grub_mkimage" -O "$platform" -o "$outdir/grub$efi_name.efi" \
-		-k debian/pub.key \
+		-v -k debian/pub.key \
 		-d "$grub_core" -p "/EFI/$efi_vendor" $GRUB_MODULES
 
 # Normal network boot image
 "$grub_mkimage" -O "$platform" -o "$outdir/grubnet$efi_name.efi" \
-		-k debian/pub.key \
+		-v -k debian/pub.key \
 		-d "$grub_core" -c "$workdir/grub-bootstrap.cfg" \
 		-m "$workdir/memdisk-netboot.fat" \
 		-p /grub $NET_MODULES
@@ -210,7 +210,7 @@ NET_MODULES="$CD_MODULES
 # normal network boot image, but with a different value baked in for
 # the prefix setting
 "$grub_mkimage" -O "$platform" -o "$outdir/grubnet$efi_name-installer.efi" \
-		-k debian/pub.key \
+		-v -k debian/pub.key \
 		-d "$grub_core" -c "$workdir/grub-bootstrap.cfg" \
 		-m "$workdir/memdisk-netboot.fat" \
 		-p "${efi_vendor}-installer/$deb_arch/grub" $NET_MODULES

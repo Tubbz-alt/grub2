@@ -959,12 +959,6 @@ static grub_ssize_t
 pseudo_read (struct grub_file *file, char *buf, grub_size_t len)
 {
   grub_memcpy (buf, (grub_uint8_t *) file->data + file->offset, len);
-  grub_dprintf ("sbverify", "reading file of data: HEAD %X%X%X%X, END %X%X%X%X\n",
-		(unsigned int) buf[0], (unsigned int) buf[1],
-		(unsigned int) buf[2], (unsigned int) buf[3],
-		(unsigned int) buf[len-4], (unsigned int) buf[len-3],
-		(unsigned int) buf[len-2], (unsigned int) buf[len-1]);
-  grub_millisleep (8000);
   return len;
 }
 
