@@ -1,0 +1,118 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grub2 (2.02+dfsg1+deepin3-1deepin1) unstable; urgency=medium
+ .
+   * Non-maintainer upload.
+   * Rebuild.
+   * Embed verify to linux command.
+Author: Zhang Yueqian <zhangyueqian@deepin.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2019-12-14
+
+--- grub2-2.02+dfsg1+deepin3.orig/grub-core/loader/i386/linux.c
++++ grub2-2.02+dfsg1+deepin3/grub-core/loader/i386/linux.c
+@@ -337,7 +337,7 @@ grub_linux_setup_video (struct linux_ker
+ 	  params->lfb_size >>= 16;
+ 	  params->have_vga = GRUB_VIDEO_LINUX_TYPE_VESA;
+ 	  break;
+-	
++
+ 	case GRUB_VIDEO_DRIVER_EFI_UGA:
+ 	case GRUB_VIDEO_DRIVER_EFI_GOP:
+ 	  params->have_vga = GRUB_VIDEO_LINUX_TYPE_EFIFB;
+@@ -635,9 +635,9 @@ grub_linux_boot (void)
+ 					 &efi_desc_size, &efi_desc_version);
+     if (err)
+       return err;
+-    
++
+     /* Note that no boot services are available from here.  */
+-    efi_mmap_target = ctx.real_mode_target 
++    efi_mmap_target = ctx.real_mode_target
+       + ((grub_uint8_t *) efi_mmap_buf - (grub_uint8_t *) real_mode_mem);
+     /* Pass EFI parameters.  */
+     if (grub_le_to_cpu16 (ctx.params->version) >= 0x0208)
+@@ -702,7 +702,7 @@ grub_cmd_linux (grub_command_t cmd __att
+   grub_uint64_t preferred_address = GRUB_LINUX_BZIMAGE_ADDR;
+ 
+   // for verify
+-  int fnlen = grbu_strlen(argv[0]);
++  int fnlen = grub_strlen(argv[0]);
+   char *verify_args[2] = { NULL, NULL };
+ 
+   grub_dl_ref (my_mod);
+@@ -751,29 +751,40 @@ grub_cmd_linux (grub_command_t cmd __att
+     goto fail;
+ 
+   // verify sig
++  grub_dl_t mod;
++
+   mod = grub_dl_load("verify");
+   if (mod)
+     {
+-      grub_dprintf ("linux", "Found module verify!\n");
++      grub_command_t verify_detach_cmd;
++      grub_err_t err;
++      int signamelen;
++
++      grub_dprintf ("sbverify", "Found module verify!\n");
+       grub_dl_ref (mod);
+       verify_detach_cmd = grub_command_find ("verify_detach");
+ 
+       fnlen = grub_strlen (argv[0]);
++
+       verify_args[0] = argv[0];
+-      verify_args[1] = grub_malloc (fnlen+4); // filename + .sig
+-      grub_strcpy (verify_args[1], argv[0]);
+-      grub_strcat (verify_args[1], ".sig");
++
++      signamelen = fnlen + 4;
++      verify_args[1] = grub_malloc (signamelen + 1); // filename + .sig
++      grub_snprintf (verify_args[1], signamelen, "%s.sig", argv[0]);
++
++      grub_dprintf ("sbverify", "filename : %s\n", verify_args[0]);
++      grub_dprintf ("sbverify", "signature: %s\n", verify_args[1]);
+ 
+       if (verify_detach_cmd)
+ 	{
+-	  grub_dprintf("linux", "Found command verify_detach!\n");
+-	  (verify_detach_cmd->func) (verify_detach_cmd, 2, verify_args);
+-	  if (grub_errorno == GRUB_ERR_NONE)
++	  grub_dprintf("sbverify", "Found command verify_detach!\n");
++	  err = (verify_detach_cmd->func) (verify_detach_cmd, 2, verify_args);
++	  if (err == GRUB_ERR_NONE)
+ 	    {
+-	      grub_dprintf ("linux", "verify success!\n");
++	      grub_dprintf ("sbverify", "verify success!\n");
+ 	    }
+ 	  else
+-	    grub_dprintf ("linux", "Error: %d\n", (int) grub_errorno);
++	    grub_dprintf ("sbverify", "Error: %d\n", (int) err);
+ 	}
+     }
+ 
+@@ -853,7 +864,7 @@ grub_cmd_linux (grub_command_t cmd __att
+       align = 0;
+       relocatable = 0;
+     }
+-    
++
+   if (grub_le_to_cpu16 (lh.version) >= 0x020a)
+     {
+       min_align = lh.min_alignment;
