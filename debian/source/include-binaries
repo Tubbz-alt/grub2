@@ -1,4 +1,5 @@
 debian/upstream-signing-key.pgp
+debian/pub.key
 GPATH
 GRTAGS
 GTAGS

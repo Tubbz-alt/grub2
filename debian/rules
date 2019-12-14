@@ -240,6 +240,7 @@ debian/stamps/build-grub-xen-host-i386 debian/stamps/build-grub-xen-host-amd64:
 	tar -cf - -C $${grub_dir} grub.cfg > $${grub_memdisk} ; \
 	$${obj_dir}/grub-mkimage \
 		-O $(PVBOOT_ARCH)-xen \
+		-k $(CURDIR)/debian/pub.key \
 		-c $(CURDIR)/debian/grub-xen-host_grub-bootstrap.cfg \
 		-d $${obj_dir}/grub-core \
 		$${obj_dir}/grub-core/*.mod \
@@ -259,6 +260,7 @@ debian/stamps/build-grub-xen-host-pvh-i386: debian/stamps/build-grub-xen-pvh-i38
 	tar -cf - -C $${grub_dir} grub.cfg > $${grub_memdisk} ; \
 	$${obj_dir}/grub-mkimage \
 		-O i386-xen_pvh \
+		-k $(CURDIR)/debian/pub.key \
 		-c $(CURDIR)/debian/grub-xen-host_grub-bootstrap.cfg \
 		-d $${obj_dir}/grub-core \
 		$${obj_dir}/grub-core/*.mod \
@@ -296,6 +298,7 @@ debian/stamps/build-grub-firmware-qemu: debian/stamps/configure-grub-firmware-qe
 	tar -cf - -C $${grub_dir} boot > $${grub_memdisk} ; \
 	obj/$(package)/grub-mkimage \
 		-O i386-qemu \
+		-k $(CURDIR)/debian/pub.key \
 		-d $(CURDIR)/obj/$(package)/grub-core \
 		$(CURDIR)/obj/$(package)/grub-core/*.mod \
 		-m $${grub_memdisk} \

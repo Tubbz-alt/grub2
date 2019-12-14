@@ -21,7 +21,7 @@ set -e
 # Make EFI boot images for signing.
 
 if [ $# -lt 6 ]; then
-	echo "usage: $0 GRUB-MKIMAGE GRUB-CORE OUTPUT-DIRECTORY DEB-ARCH PLATFORM EFI-NAME [EFI-VENDOR]"
+    echo "usage: $0 GRUB-MKIMAGE GRUB-CORE OUTPUT-DIRECTORY DEB-ARCH PLATFORM EFI-NAME [EFI-VENDOR]"
 fi
 
 grub_mkimage="$1"
@@ -38,7 +38,7 @@ export PATH="$PATH:/sbin:/usr/sbin"
 workdir=
 
 cleanup () {
-	[ -z "$workdir" ] || rm -rf "$workdir"
+    [ -z "$workdir" ] || rm -rf "$workdir"
 }
 trap cleanup EXIT HUP INT QUIT TERM
 
@@ -132,6 +132,7 @@ CD_MODULES="
 	squash4
 	test
 	true
+	verify
 	video
 	xfs
 	zfs
@@ -187,27 +188,31 @@ NET_MODULES="$CD_MODULES
 
 # CD boot image
 "$grub_mkimage" -O "$platform" -o "$outdir/gcd$efi_name.efi" \
-	-d "$grub_core" \
-	-c "$workdir/grub-bootstrap.cfg" -m "$workdir/memdisk.fat" \
-	-p /boot/grub \
-	$CD_MODULES
+		-d "$grub_core" \
+		-k debian/pub.key \
+		-c "$workdir/grub-bootstrap.cfg" -m "$workdir/memdisk.fat" \
+		-p /boot/grub \
+		$CD_MODULES
 
 # Normal disk boot image
 "$grub_mkimage" -O "$platform" -o "$outdir/grub$efi_name.efi" \
-	-d "$grub_core" -p "/EFI/$efi_vendor" $GRUB_MODULES
+		-k debian/pub.key \
+		-d "$grub_core" -p "/EFI/$efi_vendor" $GRUB_MODULES
 
 # Normal network boot image
 "$grub_mkimage" -O "$platform" -o "$outdir/grubnet$efi_name.efi" \
-	-d "$grub_core" -c "$workdir/grub-bootstrap.cfg" \
-	-m "$workdir/memdisk-netboot.fat" \
-	-p /grub $NET_MODULES
+		-k debian/pub.key \
+		-d "$grub_core" -c "$workdir/grub-bootstrap.cfg" \
+		-m "$workdir/memdisk-netboot.fat" \
+		-p /grub $NET_MODULES
 
 # Special network boot image for d-i to use. Just the same as the
 # normal network boot image, but with a different value baked in for
 # the prefix setting
 "$grub_mkimage" -O "$platform" -o "$outdir/grubnet$efi_name-installer.efi" \
-	-d "$grub_core" -c "$workdir/grub-bootstrap.cfg" \
-	-m "$workdir/memdisk-netboot.fat" \
-	-p "${efi_vendor}-installer/$deb_arch/grub" $NET_MODULES
+		-k debian/pub.key \
+		-d "$grub_core" -c "$workdir/grub-bootstrap.cfg" \
+		-m "$workdir/memdisk-netboot.fat" \
+		-p "${efi_vendor}-installer/$deb_arch/grub" $NET_MODULES
 
 exit 0
