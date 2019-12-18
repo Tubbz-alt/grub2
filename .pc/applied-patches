@@ -144,3 +144,9 @@ some_fix.patch
 fix_commands.patch
 verbose_key.patch
 add_more_print.patch
+do_not_force_enable_check_signatures_when_import_pubkey.patch
+change_print_func.patch
+delay_little.patch
+install_loadcfg_nomatter_signed.patch
+install_signed_efi_from_monolithic.patch
+finalize_packaging.patch

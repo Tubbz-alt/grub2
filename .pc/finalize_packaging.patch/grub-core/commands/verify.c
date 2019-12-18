@@ -959,6 +959,12 @@ static grub_ssize_t
 pseudo_read (struct grub_file *file, char *buf, grub_size_t len)
 {
   grub_memcpy (buf, (grub_uint8_t *) file->data + file->offset, len);
+  grub_dprintf ("sbverify", "reading file of data: HEAD %X%X%X%X, END %X%X%X%X\n",
+		(unsigned int) buf[0], (unsigned int) buf[1],
+		(unsigned int) buf[2], (unsigned int) buf[3],
+		(unsigned int) buf[len-4], (unsigned int) buf[len-3],
+		(unsigned int) buf[len-2], (unsigned int) buf[len-1]);
+  grub_millisleep (8000);
   return len;
 }
 
@@ -1006,6 +1012,8 @@ GRUB_MOD_INIT(verify)
     key_count += 1;
     grub_printf ("sbverify: loading keys of %d\n", key_count);
 
+    grub_millisleep (1000);
+
     pseudo_file.fs = &pseudo_fs;
     pseudo_file.size = (header->size - sizeof (struct grub_module_header));
     pseudo_file.data = (char *) header + sizeof (struct grub_module_header);
@@ -1017,6 +1025,8 @@ GRUB_MOD_INIT(verify)
     pk->next = grub_pk_trusted;
     grub_pk_trusted = pk;
   }
+
+  grub_millisleep (10000);
 
   /*
    * do not force enable check_signatures when import public keys.

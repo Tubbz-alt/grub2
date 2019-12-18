@@ -1469,10 +1469,7 @@ main (int argc, char *argv[])
     case GRUB_INSTALL_PLATFORM_ARM64_EFI:
     case GRUB_INSTALL_PLATFORM_IA64_EFI:
       {
-	/*
 	char *dir = xasprintf ("%s-signed", grub_install_source_directory);
-	*/
-	char *dir = xasprintf ("%s/monolithic", grub_install_source_directory);
 	char *signed_image;
 	if (removable)
 	  signed_image = xasprintf ("gcd%s.efi.signed", efi_suffix);

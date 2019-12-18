@@ -784,12 +784,11 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 	      grub_dprintf ("sbverify", "verify success!\n");
 	    }
 	  else
-	    {
-	      grub_error (err, "File %s verify failed!\n", argv[0]);
-	      goto fail;
-	    }
+	    grub_dprintf ("sbverify", "Error: %d\n", (int) err);
 	}
     }
+
+  grub_millisleep (30000);
 
   if (grub_file_read (file, &lh, sizeof (lh)) != sizeof (lh))
     {

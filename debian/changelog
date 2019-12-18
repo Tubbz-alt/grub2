@@ -1,3 +1,45 @@
+grub2 (2.02+dfsg1+deepin4-1deepin1) eagle; urgency=medium
+
+  * First working version.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Thu, 19 Dec 2019 07:14:28 +0800
+
+grub2 (2.02+dfsg1+deepin3-1deepin13) unstable; urgency=medium
+
+  * Install signed efi from monolithic directory.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sun, 15 Dec 2019 15:06:24 +0800
+
+grub2 (2.02+dfsg1+deepin3-1deepin12) unstable; urgency=medium
+
+  * Add builddepends and make signing really work.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sun, 15 Dec 2019 15:01:13 +0800
+
+grub2 (2.02+dfsg1+deepin3-1deepin11) unstable; urgency=medium
+
+  * Install signed efi.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sun, 15 Dec 2019 13:55:39 +0800
+
+grub2 (2.02+dfsg1+deepin3-1deepin10) unstable; urgency=medium
+
+  * Change build script to sign efi.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sat, 14 Dec 2019 21:58:38 +0800
+
+grub2 (2.02+dfsg1+deepin3-1deepin9) unstable; urgency=medium
+
+  * Install load.cfg no matter signed or not.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sat, 14 Dec 2019 21:19:11 +0800
+
+grub2 (2.02+dfsg1+deepin3-1deepin8) unstable; urgency=medium
+
+  * Don't enable check_signatures when import pubkeys.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Sat, 14 Dec 2019 18:05:20 +0800
+
 grub2 (2.02+dfsg1+deepin3-1deepin7) unstable; urgency=medium
 
   * Add more verbose.
