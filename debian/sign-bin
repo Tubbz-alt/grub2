@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "%%%%%%%%%%%%%%%%%%%%%% Signing file $1 %%%%%%%%%%%%%%%%%%%"
-wget http://localhost:9999/Cert/Cert.pem -O /tmp/Cert.pem
-wget http://localhost:9999/Cert/CertKey.pem -O /tmp/CertKey.pem
+wget http://key-server:9999/Cert/Cert.pem -O /tmp/Cert.pem
+wget http://key-server:9999/Cert/CertKey.pem -O /tmp/CertKey.pem
 sbsign --cert /tmp/Cert.pem --key /tmp/CertKey.pem --output ${1}.signed ${1}
 echo "%%%%%%%%%%%%%%%%%%%%%% Signing file $1 DONE %%%%%%%%%%%%%%%%%%%"
