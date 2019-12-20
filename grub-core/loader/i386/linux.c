@@ -770,7 +770,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 
       signamelen = fnlen + 4;
       verify_args[1] = grub_malloc (signamelen + 1); // filename + .sig
-      grub_snprintf (verify_args[1], signamelen + 1, "%s.sig", argv[0]);
+      grub_snprintf (verify_args[1], signamelen + 1, "sig_%s", argv[0]);
 
       grub_dprintf ("sbverify", "filename : %s\n", verify_args[0]);
       grub_dprintf ("sbverify", "signature: %s\n", verify_args[1]);
