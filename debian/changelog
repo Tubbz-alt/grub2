@@ -1,3 +1,10 @@
+grub2 (2.02+dfsg1+deepin4-2deepin1) eagle; urgency=medium
+
+  * Add sbverify for arm64.
+  * Change signature name to sig_%s.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Fri, 20 Dec 2019 18:56:55 +0800
+
 grub2 (2.02+dfsg1+deepin4-1deepin1) eagle; urgency=medium
 
   * First working version.

@@ -1,0 +1,87 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grub2 (2.02+dfsg1+deepin4-1deepin1) eagle; urgency=medium
+ .
+   * First working version.
+Author: Zhang Yueqian <zhangyueqian@deepin.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2019-12-20
+
+--- grub2-2.02+dfsg1+deepin4.orig/grub-core/loader/arm64/linux.c
++++ grub2-2.02+dfsg1+deepin4/grub-core/loader/arm64/linux.c
+@@ -305,8 +305,46 @@ grub_cmd_linux (grub_command_t cmd __att
+   if (grub_file_read (file, &lh, sizeof (lh)) < (long) sizeof (lh))
+     return grub_errno;
+ 
+-  if (grub_armxx_efi_linux_check_image (&lh) != GRUB_ERR_NONE)
+-    goto fail;
++  // verify sig
++  grub_dl_t mod;
++
++  mod = grub_dl_load("verify");
++  if (mod)
++    {
++      grub_command_t verify_detached_cmd;
++      grub_err_t err;
++      int signamelen;
++
++      grub_dprintf ("sbverify", "Found module verify!\n");
++      grub_dl_ref (mod);
++      verify_detached_cmd = grub_command_find ("verify_detached");
++
++      fnlen = grub_strlen (argv[0]);
++
++      verify_args[0] = argv[0];
++
++      signamelen = fnlen + 4;
++      verify_args[1] = grub_malloc (signamelen + 1); // filename + .sig
++      grub_snprintf (verify_args[1], signamelen + 1, "sig_%s", argv[0]);
++
++      grub_dprintf ("sbverify", "filename : %s\n", verify_args[0]);
++      grub_dprintf ("sbverify", "signature: %s\n", verify_args[1]);
++
++      if (verify_detached_cmd)
++	{
++	  grub_dprintf("sbverify", "Found command verify_detach!\n");
++	  err = (verify_detached_cmd->func) (verify_detached_cmd, 2, verify_args);
++	  if (err == GRUB_ERR_NONE)
++	    {
++	      grub_dprintf ("sbverify", "verify success!\n");
++	    }
++	  else
++	    {
++	      grub_error (err, "File %s verify failed!\n", argv[0]);
++	      goto fail;
++	    }
++	}
++    }
+ 
+   grub_loader_unset();
+ 
+--- grub2-2.02+dfsg1+deepin4.orig/grub-core/loader/i386/linux.c
++++ grub2-2.02+dfsg1+deepin4/grub-core/loader/i386/linux.c
+@@ -770,7 +770,7 @@ grub_cmd_linux (grub_command_t cmd __att
+ 
+       signamelen = fnlen + 4;
+       verify_args[1] = grub_malloc (signamelen + 1); // filename + .sig
+-      grub_snprintf (verify_args[1], signamelen + 1, "%s.sig", argv[0]);
++      grub_snprintf (verify_args[1], signamelen + 1, "sig_%s", argv[0]);
+ 
+       grub_dprintf ("sbverify", "filename : %s\n", verify_args[0]);
+       grub_dprintf ("sbverify", "signature: %s\n", verify_args[1]);

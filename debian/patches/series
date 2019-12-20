@@ -150,3 +150,4 @@ delay_little.patch
 install_loadcfg_nomatter_signed.patch
 install_signed_efi_from_monolithic.patch
 finalize_packaging.patch
+add_sbverify_to_arm64_and_change_signature_name.patch
