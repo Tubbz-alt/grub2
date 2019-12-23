@@ -1,3 +1,15 @@
+grub2 (2.02+dfsg1+deepin4-4deepin1) eagle; urgency=medium
+
+  * Disable verify for arm64.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Fri, 20 Dec 2019 22:59:10 +0800
+
+grub2 (2.02+dfsg1+deepin4-3deepin1) eagle; urgency=medium
+
+  * Refactor variables.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Fri, 20 Dec 2019 19:09:48 +0800
+
 grub2 (2.02+dfsg1+deepin4-2deepin1) eagle; urgency=medium
 
   * Add sbverify for arm64.

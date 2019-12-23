@@ -288,11 +288,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   grub_file_t file = 0;
   struct linux_armxx_kernel_header lh;
 
-    // for verify
-#if 0
-  char *verify_args[2] = { NULL, NULL };
-#endif
-
   grub_dl_ref (my_mod);
 
   if (argc == 0)
@@ -311,8 +306,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     return grub_errno;
 
   // verify sig
-#if 0
-  // temperaly disable this for arm64.
   grub_dl_t mod;
 
   mod = grub_dl_load("verify");
@@ -326,9 +319,11 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
       grub_dl_ref (mod);
       verify_detached_cmd = grub_command_find ("verify_detached");
 
+      fnlen = grub_strlen (argv[0]);
+
       verify_args[0] = argv[0];
 
-      signamelen = grub_strlen (argv[0]) + 4;
+      signamelen = fnlen + 4;
       verify_args[1] = grub_malloc (signamelen + 1); // filename + .sig
       grub_snprintf (verify_args[1], signamelen + 1, "sig_%s", argv[0]);
 
@@ -350,7 +345,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 	    }
 	}
     }
-#endif
+
   grub_loader_unset();
 
   grub_dprintf ("linux", "kernel file size: %lld\n", (long long) kernel_size);

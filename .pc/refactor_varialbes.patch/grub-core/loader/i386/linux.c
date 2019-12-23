@@ -702,6 +702,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   grub_uint64_t preferred_address = GRUB_LINUX_BZIMAGE_ADDR;
 
   // for verify
+  int fnlen = grub_strlen(argv[0]);
   char *verify_args[2] = { NULL, NULL };
 
   grub_dl_ref (my_mod);
@@ -763,9 +764,11 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
       grub_dl_ref (mod);
       verify_detached_cmd = grub_command_find ("verify_detached");
 
+      fnlen = grub_strlen (argv[0]);
+
       verify_args[0] = argv[0];
 
-      signamelen = grub_strlen (argv[0]) + 4;
+      signamelen = fnlen + 4;
       verify_args[1] = grub_malloc (signamelen + 1); // filename + .sig
       grub_snprintf (verify_args[1], signamelen + 1, "sig_%s", argv[0]);
 
