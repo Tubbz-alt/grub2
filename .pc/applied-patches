@@ -153,3 +153,7 @@ finalize_packaging.patch
 add_sbverify_to_arm64_and_change_signature_name.patch
 refactor_varialbes.patch
 disable_verify_for_arm64.patch
+verify_kernel_using_efi_loadimage.patch
+fix_compile_error.patch
+fix_compile_error_02.patch
+fix_compile_error_03.patch

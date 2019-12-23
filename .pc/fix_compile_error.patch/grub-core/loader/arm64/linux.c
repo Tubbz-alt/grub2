@@ -377,6 +377,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   grub_efi_handle_t sb_image_handle;
   grub_efi_boot_services_t *sb_bs;
   grub_efi_status_t sb_status;
+  grub_efi_loaded_image_t *sb_loaded_image;
 
   sb_mempath = grub_malloc (2 * sizeof (grub_efi_memory_mapped_device_path_t));
   if (!sb_mempath)
@@ -386,10 +387,10 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     }
   sb_mempath[0].header.type = GRUB_EFI_HARDWARE_DEVICE_PATH_TYPE;
   sb_mempath[0].header.subtype = GRUB_EFI_MEMORY_MAPPED_DEVICE_PATH_SUBTYPE;
-  sb_mempath[0].header.length = grub_cpu_to_le16_compile_time (sizeof (*sb_mempath));
+  sb_mempath[0].header.length = grub_cpu_to_le16_compile_time (sizeof (*mempath));
   sb_mempath[0].memory_type = GRUB_EFI_LOADER_DATA;
-  sb_mempath[0].start_address = (grub_addr_t) kernel_addr;
-  sb_mempath[0].end_address = (grub_addr_t) kernel_addr + kernel_size;
+  sb_mempath[0].start_address = kernel_addr;
+  sb_mempath[0].end_address = kernel_addr + kernel_size;
 
   sb_mempath[1].header.type = GRUB_EFI_END_DEVICE_PATH_TYPE;
   sb_mempath[1].header.subtype = GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE;
@@ -400,7 +401,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 				 (grub_efi_device_path_t *) sb_mempath,
 				 (void *) kernel_addr, kernel_size, &sb_image_handle);
   if (sb_status != GRUB_EFI_SUCCESS)
-    return grub_error (GRUB_ERR_BAD_OS, "Verify failed!");
+    return grub_err (GRUB_ERR_BAD_OS, "Verify failed!");
 
   grub_dprintf ("sbverify", "Verify success!\n");
   sb_bs->unload_image (sb_image_handle);

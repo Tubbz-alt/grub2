@@ -1,3 +1,9 @@
+grub2 (2.02+dfsg1+deepin4-5deepin1) ealge; urgency=medium
+
+  * Verify kernel by using efi LoadImage method.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Mon, 23 Dec 2019 11:25:42 +0800
+
 grub2 (2.02+dfsg1+deepin4-4deepin1) eagle; urgency=medium
 
   * Disable verify for arm64.

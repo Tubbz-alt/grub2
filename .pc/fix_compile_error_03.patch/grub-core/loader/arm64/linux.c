@@ -386,7 +386,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     }
   sb_mempath[0].header.type = GRUB_EFI_HARDWARE_DEVICE_PATH_TYPE;
   sb_mempath[0].header.subtype = GRUB_EFI_MEMORY_MAPPED_DEVICE_PATH_SUBTYPE;
-  sb_mempath[0].header.length = grub_cpu_to_le16_compile_time (sizeof (*sb_mempath));
+  sb_mempath[0].header.length = grub_cpu_to_le16_compile_time (sizeof (*mempath));
   sb_mempath[0].memory_type = GRUB_EFI_LOADER_DATA;
   sb_mempath[0].start_address = (grub_addr_t) kernel_addr;
   sb_mempath[0].end_address = (grub_addr_t) kernel_addr + kernel_size;
