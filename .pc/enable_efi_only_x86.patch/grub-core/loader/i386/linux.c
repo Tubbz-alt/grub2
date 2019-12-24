@@ -738,7 +738,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     }
 #endif
 
-#ifdef GRUB_MACHINE_EFI
   // verify kernel by LoadImage() service provided by UEFI.
   grub_efi_memory_mapped_device_path_t *sb_mempath;
   grub_efi_handle_t sb_image_handle;
@@ -756,7 +755,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     }
 
   sb_kernel_file = grub_file_open (argv[0]);
-  sb_kernel_size = grub_file_size (sb_kernel_file);
+  sb_kernel_size = grub_file_size (argv[0]);
   sb_kernel_addr = grub_malloc (sb_kernel_size);
   if (grub_file_read (sb_kernel_file, sb_kernel_addr, sb_kernel_size) != sb_kernel_size)
     {
@@ -787,7 +786,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   grub_free (sb_mempath);
 
   // END verify kernel.
-#endif
 
   if (argc == 0)
     {

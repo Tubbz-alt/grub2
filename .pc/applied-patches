@@ -157,3 +157,8 @@ verify_kernel_using_efi_loadimage.patch
 fix_compile_error.patch
 fix_compile_error_02.patch
 fix_compile_error_03.patch
+do_not_use_linuxefi_and_initrdefi_use_uefi_LoadImage_instead.patch
+fix_compile_error_04.patch
+add_kern_efi_efi_c.patch
+enable_efi_only_x86.patch
+fix_compile_error_05.patch

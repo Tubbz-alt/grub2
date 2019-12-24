@@ -1695,7 +1695,6 @@ module = {
 module = {
   name = linux;
   x86 = loader/i386/linux.c;
-  x86 = kern/efi/efi.c;
   i386_xen_pvh = loader/i386/linux.c;
   xen = loader/i386/xen.c;
   i386_pc = lib/i386/pc/vesa_modes_table.c;

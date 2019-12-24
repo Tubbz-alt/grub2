@@ -1,0 +1,94 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grub2 (2.02+dfsg1+deepin4-5deepin2) eagle; urgency=medium
+ .
+   * Change for i386 too.
+Author: Zhang Yueqian <zhangyueqian@deepin.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2019-12-23
+
+--- grub2-2.02+dfsg1+deepin4.orig/grub-core/loader/i386/linux.c
++++ grub2-2.02+dfsg1+deepin4/grub-core/loader/i386/linux.c
+@@ -45,6 +45,7 @@ GRUB_MOD_LICENSE ("GPLv3+");
+ #endif
+ 
+ #ifdef GRUB_MACHINE_EFI
++#include <grub/efi/api.h>
+ #include <grub/efi/efi.h>
+ #define HAS_VGA_TEXT 0
+ #define DEFAULT_VIDEO_MODE "auto"
+@@ -701,13 +702,10 @@ grub_cmd_linux (grub_command_t cmd __att
+   int relocatable;
+   grub_uint64_t preferred_address = GRUB_LINUX_BZIMAGE_ADDR;
+ 
+-  // for verify
+-  char *verify_args[2] = { NULL, NULL };
+-
+   grub_dl_ref (my_mod);
+ 
+   // #ifdef GRUB_MACHINE_EFI
+-#ifdef 0
++#if 0
+   using_linuxefi = 0;
+   if (grub_efi_secure_boot ())
+     {
+@@ -745,6 +743,9 @@ grub_cmd_linux (grub_command_t cmd __att
+   grub_efi_handle_t sb_image_handle;
+   grub_efi_boot_services_t *sb_bs;
+   grub_efi_status_t sb_status;
++  void *sb_kernel_addr;
++  grub_ssize_t sb_kernel_size;
++  grub_file_t sb_kernel_file = 0;
+ 
+   sb_mempath = grub_malloc (2 * sizeof (grub_efi_memory_mapped_device_path_t));
+   if (!sb_mempath)
+@@ -752,12 +753,22 @@ grub_cmd_linux (grub_command_t cmd __att
+       grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
+       goto fail;
+     }
++
++  sb_kernel_file = grub_file_open (argv[0]);
++  sb_kernel_size = grub_file_size (argv[0]);
++  sb_kernel_addr = grub_malloc (sb_kernel_size);
++  if (grub_file_read (sb_kernel_file, sb_kernel_addr, sb_kernel_size) != sb_kernel_size)
++    {
++      grub_error (GRUB_ERR_FILE_READ_ERROR, N_("Can't read kernel %s"), argv[0]);
++      goto fail;
++    }
++  
+   sb_mempath[0].header.type = GRUB_EFI_HARDWARE_DEVICE_PATH_TYPE;
+   sb_mempath[0].header.subtype = GRUB_EFI_MEMORY_MAPPED_DEVICE_PATH_SUBTYPE;
+   sb_mempath[0].header.length = grub_cpu_to_le16_compile_time (sizeof (*sb_mempath));
+   sb_mempath[0].memory_type = GRUB_EFI_LOADER_DATA;
+-  sb_mempath[0].start_address = (grub_addr_t) kernel_addr;
+-  sb_mempath[0].end_address = (grub_addr_t) kernel_addr + kernel_size;
++  sb_mempath[0].start_address = (grub_addr_t) sb_kernel_addr;
++  sb_mempath[0].end_address = (grub_addr_t) sb_kernel_addr + (grub_addr_t) sb_kernel_size;
+ 
+   sb_mempath[1].header.type = GRUB_EFI_END_DEVICE_PATH_TYPE;
+   sb_mempath[1].header.subtype = GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE;
+@@ -766,7 +777,7 @@ grub_cmd_linux (grub_command_t cmd __att
+   sb_bs = grub_efi_system_table->boot_services;
+   sb_status = sb_bs->load_image (0, grub_efi_image_handle,
+ 				 (grub_efi_device_path_t *) sb_mempath,
+-				 (void *) kernel_addr, kernel_size, &sb_image_handle);
++				 sb_kernel_addr, (grub_addr_t) sb_kernel_size, &sb_image_handle);
+   if (sb_status != GRUB_EFI_SUCCESS)
+     return grub_error (GRUB_ERR_BAD_OS, "Verify failed!");
+ 

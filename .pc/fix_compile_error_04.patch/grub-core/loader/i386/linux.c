@@ -45,7 +45,6 @@ GRUB_MOD_LICENSE ("GPLv3+");
 #endif
 
 #ifdef GRUB_MACHINE_EFI
-#include <grub/efi/api.h>
 #include <grub/efi/efi.h>
 #define HAS_VGA_TEXT 0
 #define DEFAULT_VIDEO_MODE "auto"
@@ -702,10 +701,13 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   int relocatable;
   grub_uint64_t preferred_address = GRUB_LINUX_BZIMAGE_ADDR;
 
+  // for verify
+  char *verify_args[2] = { NULL, NULL };
+
   grub_dl_ref (my_mod);
 
   // #ifdef GRUB_MACHINE_EFI
-#if 0
+#ifdef 0
   using_linuxefi = 0;
   if (grub_efi_secure_boot ())
     {
@@ -738,15 +740,11 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     }
 #endif
 
-#ifdef GRUB_MACHINE_EFI
   // verify kernel by LoadImage() service provided by UEFI.
   grub_efi_memory_mapped_device_path_t *sb_mempath;
   grub_efi_handle_t sb_image_handle;
   grub_efi_boot_services_t *sb_bs;
   grub_efi_status_t sb_status;
-  void *sb_kernel_addr;
-  grub_ssize_t sb_kernel_size;
-  grub_file_t sb_kernel_file = 0;
 
   sb_mempath = grub_malloc (2 * sizeof (grub_efi_memory_mapped_device_path_t));
   if (!sb_mempath)
@@ -754,22 +752,12 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
       grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
       goto fail;
     }
-
-  sb_kernel_file = grub_file_open (argv[0]);
-  sb_kernel_size = grub_file_size (sb_kernel_file);
-  sb_kernel_addr = grub_malloc (sb_kernel_size);
-  if (grub_file_read (sb_kernel_file, sb_kernel_addr, sb_kernel_size) != sb_kernel_size)
-    {
-      grub_error (GRUB_ERR_FILE_READ_ERROR, N_("Can't read kernel %s"), argv[0]);
-      goto fail;
-    }
-  
   sb_mempath[0].header.type = GRUB_EFI_HARDWARE_DEVICE_PATH_TYPE;
   sb_mempath[0].header.subtype = GRUB_EFI_MEMORY_MAPPED_DEVICE_PATH_SUBTYPE;
   sb_mempath[0].header.length = grub_cpu_to_le16_compile_time (sizeof (*sb_mempath));
   sb_mempath[0].memory_type = GRUB_EFI_LOADER_DATA;
-  sb_mempath[0].start_address = (grub_addr_t) sb_kernel_addr;
-  sb_mempath[0].end_address = (grub_addr_t) sb_kernel_addr + (grub_addr_t) sb_kernel_size;
+  sb_mempath[0].start_address = (grub_addr_t) kernel_addr;
+  sb_mempath[0].end_address = (grub_addr_t) kernel_addr + kernel_size;
 
   sb_mempath[1].header.type = GRUB_EFI_END_DEVICE_PATH_TYPE;
   sb_mempath[1].header.subtype = GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE;
@@ -778,7 +766,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   sb_bs = grub_efi_system_table->boot_services;
   sb_status = sb_bs->load_image (0, grub_efi_image_handle,
 				 (grub_efi_device_path_t *) sb_mempath,
-				 sb_kernel_addr, (grub_addr_t) sb_kernel_size, &sb_image_handle);
+				 (void *) kernel_addr, kernel_size, &sb_image_handle);
   if (sb_status != GRUB_EFI_SUCCESS)
     return grub_error (GRUB_ERR_BAD_OS, "Verify failed!");
 
@@ -787,7 +775,6 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   grub_free (sb_mempath);
 
   // END verify kernel.
-#endif
 
   if (argc == 0)
     {

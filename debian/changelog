@@ -1,6 +1,12 @@
+grub2 (2.02+dfsg1+deepin4-5deepin2) eagle; urgency=medium
+
+  * Change for i386 too.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Mon, 23 Dec 2019 16:04:33 +0800
+
 grub2 (2.02+dfsg1+deepin4-5deepin1) ealge; urgency=medium
 
-  * Verify kernel by using efi LoadImage method.
+  * Verify kernel by using efi LoadImage method on arm64.
 
  -- Zhang Yueqian <zhangyueqian@deepin.com>  Mon, 23 Dec 2019 11:25:42 +0800
 

@@ -756,7 +756,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
     }
 
   sb_kernel_file = grub_file_open (argv[0]);
-  sb_kernel_size = grub_file_size (sb_kernel_file);
+  sb_kernel_size = grub_file_size (argv[0]);
   sb_kernel_addr = grub_malloc (sb_kernel_size);
   if (grub_file_read (sb_kernel_file, sb_kernel_addr, sb_kernel_size) != sb_kernel_size)
     {
