@@ -1,0 +1,44 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grub2 (2.02+dfsg1+deepin4-5deepin3) eagle; urgency=medium
+ .
+   * Try to fix compilation error.
+Author: Zhang Yueqian <zhangyueqian@deepin.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2019-12-24
+
+--- grub2-2.02+dfsg1+deepin4.orig/grub-core/genmoddep.awk
++++ grub2-2.02+dfsg1+deepin4/grub-core/genmoddep.awk
+@@ -141,7 +141,7 @@ END {
+ 	something_done = 0
+ 	for (mod in depcount) {
+ 	    printf "processing module: %s\n", mod >"/dev/stderr";
+-	    printf "depcount[%s] == %s", mod, depcount[mod] >"/dev/stderr";
++	    printf "depcount[%s] == %s\n", mod, depcount[mod] >"/dev/stderr";
+ 	    if (depcount[mod] == 0) {
+ 		delete depcount[mod]
+ 		split(inverse_dependencies[mod], inv_depmods, " ");
+@@ -150,6 +150,7 @@ END {
+ 		    total_depcount--
+ 		}
+ 		delete inverse_dependencies[mod]
++		printf "something_done is now becomes 1\n" >"/dev/stderr";
+ 		something_done = 1
+ 	    }
+ 	}

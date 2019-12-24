@@ -1,3 +1,9 @@
+grub2 (2.02+dfsg1+deepin4-5deepin3) eagle; urgency=medium
+
+  * Try to fix compilation error.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Tue, 24 Dec 2019 11:52:41 +0800
+
 grub2 (2.02+dfsg1+deepin4-5deepin2) eagle; urgency=medium
 
   * Change for i386 too.
