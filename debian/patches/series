@@ -165,3 +165,5 @@ fix_compile_error_05.patch
 try_to_understand_genmoddep.patch
 try_again.patch
 try_again_02.patch
+remove_kern_efi_efi_c.patch
+show_efi_error_code.patch

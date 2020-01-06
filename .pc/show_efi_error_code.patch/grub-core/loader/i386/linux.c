@@ -704,14 +704,8 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 
   grub_dl_ref (my_mod);
 
+  // #ifdef GRUB_MACHINE_EFI
 #if 0
-  /*
-#ifdef GRUB_MACHINE_EFI
-  */
-
-  // Disable this because we do not have shim on other platform installed,
-  // and on mipsel there's even no shim avaliable, so use method LoadImage()
-  // which is provided by UEFI to verify kernel.
   using_linuxefi = 0;
   if (grub_efi_secure_boot ())
     {
@@ -742,16 +736,24 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
 	    }
 	}
     }
-#endif /* 0 */
+#endif
 
 #ifdef GRUB_MACHINE_EFI
   // verify kernel by LoadImage() service provided by UEFI.
+  grub_efi_memory_mapped_device_path_t *sb_mempath;
   grub_efi_handle_t sb_image_handle;
   grub_efi_boot_services_t *sb_bs;
   grub_efi_status_t sb_status;
   void *sb_kernel_addr;
   grub_ssize_t sb_kernel_size;
   grub_file_t sb_kernel_file = 0;
+
+  sb_mempath = grub_malloc (2 * sizeof (grub_efi_memory_mapped_device_path_t));
+  if (!sb_mempath)
+    {
+      grub_error (GRUB_ERR_OUT_OF_MEMORY, N_("out of memory"));
+      goto fail;
+    }
 
   sb_kernel_file = grub_file_open (argv[0]);
   sb_kernel_size = grub_file_size (sb_kernel_file);
@@ -762,18 +764,30 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
       goto fail;
     }
   
+  sb_mempath[0].header.type = GRUB_EFI_HARDWARE_DEVICE_PATH_TYPE;
+  sb_mempath[0].header.subtype = GRUB_EFI_MEMORY_MAPPED_DEVICE_PATH_SUBTYPE;
+  sb_mempath[0].header.length = grub_cpu_to_le16_compile_time (sizeof (*sb_mempath));
+  sb_mempath[0].memory_type = GRUB_EFI_LOADER_DATA;
+  sb_mempath[0].start_address = (grub_addr_t) sb_kernel_addr;
+  sb_mempath[0].end_address = (grub_addr_t) sb_kernel_addr + (grub_addr_t) sb_kernel_size;
+
+  sb_mempath[1].header.type = GRUB_EFI_END_DEVICE_PATH_TYPE;
+  sb_mempath[1].header.subtype = GRUB_EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE;
+  sb_mempath[1].header.length = sizeof (grub_efi_device_path_t);
+
   sb_bs = grub_efi_system_table->boot_services;
-  sb_status = efi_call_6 (sb_bs->load_image, 0, grub_efi_image_handle, NULL,
-			  (char *)sb_kernel_addr, sb_kernel_size, &sb_image_handle);
+  sb_status = sb_bs->load_image (0, grub_efi_image_handle,
+				 (grub_efi_device_path_t *) sb_mempath,
+				 sb_kernel_addr, (grub_addr_t) sb_kernel_size, &sb_image_handle);
   if (sb_status != GRUB_EFI_SUCCESS)
-    {
-      grub_dprintf ("sbverify", "EFI_ERROR: %d\n", (int) sb_status);
-      return grub_error (GRUB_ERR_BAD_OS, "Verify failed!");
-    }
+    return grub_error (GRUB_ERR_BAD_OS, "Verify failed!");
 
   grub_dprintf ("sbverify", "Verify success!\n");
-  efi_call_1 (sb_bs->unload_image, sb_image_handle);
-#endif /* GRUB_MACHINE_EFI */
+  sb_bs->unload_image (sb_image_handle);
+  grub_free (sb_mempath);
+
+  // END verify kernel.
+#endif
 
   if (argc == 0)
     {

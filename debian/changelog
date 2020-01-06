@@ -1,3 +1,9 @@
+grub2 (2.02+dfsg1+deepin4-5deepin4) eagle; urgency=medium
+
+  * Remove kern/efi/efi.c from Makefile.core.def.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Wed, 25 Dec 2019 08:37:17 +0800
+
 grub2 (2.02+dfsg1+deepin4-5deepin3) eagle; urgency=medium
 
   * Try to fix compilation error.
