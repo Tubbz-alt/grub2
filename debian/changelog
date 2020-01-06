@@ -1,3 +1,10 @@
+grub2 (2.02+dfsg1+deepin3-1deepin1) eagle; urgency=medium
+
+  * Non-maintainer upload.
+  * Package for development test.
+
+ -- Zhang Yueqian <zhangyueqian@deepin.com>  Mon, 06 Jan 2020 17:48:43 +0800
+
 grub2 (2.02+dfsg1+deepin2-1+deepin) unstable; urgency=low
 
   * ['Autobuild release-candidate: f037c9b9ddfca4a7ea79100b3280a17a444b3c69']
