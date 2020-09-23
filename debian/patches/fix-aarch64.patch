@@ -1,0 +1,59 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ grub2 (2.02+dfsg1-20) unstable; urgency=medium
+ .
+   [ Steve McIntyre ]
+   * Make all the signed EFI arches have a Recommends: from
+     grub-efi-ARCH-signed to shim-signed, not just amd64.
+     Closes: #931038
+   * Add myself to Uploaders
+Author: Steve McIntyre <93sam@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2019-10-13
+
+--- grub2-2.02+dfsg1.orig/util/grub.d/00_header.in
++++ grub2-2.02+dfsg1/util/grub.d/00_header.in
+@@ -1,6 +1,10 @@
+ #! /bin/sh
+ set -e
+-
++arch=`uname -m`
++if [ "$arch" = "aarch64" ];then
++	echo "set timeout=5"
++	exit 0
++fi
+ # grub-mkconfig helper script.
+ # Copyright (C) 2006,2007,2008,2009,2010  Free Software Foundation, Inc.
+ #
+--- grub2-2.02+dfsg1.orig/util/grub.d/10_linux.in
++++ grub2-2.02+dfsg1/util/grub.d/10_linux.in
+@@ -142,10 +142,11 @@ linux_entry ()
+ 
+   # Use ELILO's generic "efifb" when it's known to be available.
+   # FIXME: We need an interface to select vesafb in case efifb can't be used.
+-  if [ "x$GRUB_GFXPAYLOAD_LINUX" = x ]; then
++  arch=`uname -m`
++  if [ "x$GRUB_GFXPAYLOAD_LINUX" = x ] && [ "$arch" != "aarch64" ]; then
+       echo "	load_video" | sed "s/^/$submenu_indentation/"
+   else
+-      if [ "x$GRUB_GFXPAYLOAD_LINUX" != xtext ]; then
++      if [ "x$GRUB_GFXPAYLOAD_LINUX" != xtext ] && [ "$arch" != "aarch64" ]; then
+ 	  echo "	load_video" | sed "s/^/$submenu_indentation/"
+       fi
+   fi
